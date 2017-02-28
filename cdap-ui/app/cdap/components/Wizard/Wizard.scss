@@ -85,12 +85,19 @@
         top: 35%;
         left: 10%;
         font-size: 18px;
+        max-width: 85%;
+        overflow: hidden;
+        text-overflow: ellipsis;
 
         .clearfix {
           margin-top: 25px;
 
           .call-to-action {
             font-size: 18px;
+            max-width: 45%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
 
           .secondary-call-to-action {
