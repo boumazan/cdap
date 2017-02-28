@@ -144,7 +144,10 @@ features:
         sortedBy: sorted by
         displayAll: Displaying All Entities
         displaySome: Displaying
-    emptyMessage: No entities found in the system.
+    emptyMessage:
+      default: No entities found in the system
+      search: No results found for "{searchText}"
+      filter: No entities found for these filters
     Cards:
       type: "Type: "
     Errors:
