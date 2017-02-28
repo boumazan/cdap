@@ -17,8 +17,8 @@ import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import ResourceCenterEntity from 'components/ResourceCenterEntity';
 import StreamCreateWithUploadWizard from 'components/CaskWizards/StreamCreateWithUpload';
-import HydratorPipeline from 'components/CaskWizards/HydratorPipeline';
 import CreateStreamWithUploadStore from 'services/WizardStores/CreateStreamWithUpload/CreateStreamWithUploadStore';
+import NamespaceStore from 'services/NamespaceStore';
 import AbstractWizard from 'components/AbstractWizard';
 import T from 'i18n-react';
 
@@ -38,7 +38,6 @@ export default class ResourceCenter extends Component {
     super(props);
     this.state = {
       createStreamWizard: false,
-      hydratorPipeline: false,
       entities: [{
         title: T.translate('features.Resource-Center.Stream.label'),
         description: T.translate('features.Resource-Center.Stream.description'),
@@ -63,7 +62,14 @@ export default class ResourceCenter extends Component {
         actionLabel: T.translate('features.Resource-Center.HydratorPipeline.actionbtn0'),
         iconClassName: 'fa icon-hydrator',
         wizardId: 'hydratorPipeline',
-        disabled: false
+        disabled: false,
+        actionLink: window.getHydratorUrl({
+          stateName: 'hydrator.create',
+          stateParams: {
+            namespace: NamespaceStore.getState().selectedNamespace,
+            artifactType: 'cdap-data-pipeline'
+          }
+        })
       }, {
         title: T.translate('features.Resource-Center.Plugins.label'),
         description: T.translate('features.Resource-Center.Plugins.description'),
@@ -74,6 +80,7 @@ export default class ResourceCenter extends Component {
     };
   }
   toggleWizard(wizardName) {
+    if (wizardName === 'hydratorPipeline') { return; }
     this.setState({
       [wizardName]: !this.state[wizardName]
     });
@@ -89,14 +96,6 @@ export default class ResourceCenter extends Component {
           store={CreateStreamWithUploadStore}
           onClose={this.toggleWizard.bind(this, 'createStreamWizard')}
           withUploadStep
-        />
-      );
-    }
-    if (this.state.hydratorPipeline) {
-      return (
-        <HydratorPipeline
-          isOpen={this.state.hydratorPipeline}
-          onClose={this.toggleWizard.bind(this, 'hydratorPipeline')}
         />
       );
     }
@@ -147,6 +146,7 @@ export default class ResourceCenter extends Component {
                   key={index}
                   disabled={entity.disabled}
                   onClick={this.toggleWizard.bind(this, entity.wizardId)}
+                  actionLink={entity.actionLink}
                 />
               ))
           }
