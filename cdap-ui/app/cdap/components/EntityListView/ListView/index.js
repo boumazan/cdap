@@ -144,16 +144,25 @@ export default class HomeListView extends Component {
         <strong>{content}</strong>
         <hr />
         <div className="empty-message-suggestions">
-          <span>You can try to:</span>
-          <br />
-          <span
-            className="action-item"
-            onClick={clearFunc}
-          >
-            Clear
-          </span>
-          <span> your {clearText} or</span>
-          <br />
+          {
+            clearFunc && clearText ?
+              (
+                <span>
+                  <span>You can try to:</span>
+                  <br />
+                  <span
+                    className="action-item"
+                    onClick={clearFunc}
+                  >
+                    Clear
+                  </span>
+                  <span> your {clearText} or</span>
+                  <br />
+                </span>
+              )
+            :
+              null
+          }
           <span
             className="action-item"
             onClick={this.openAddEntityModal}
