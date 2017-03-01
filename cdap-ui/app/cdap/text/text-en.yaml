@@ -145,7 +145,7 @@ features:
         displayAll: Displaying All Entities
         displaySome: Displaying
     emptyMessage:
-      default: No entities found in the system
+      default: No entities found in this namespace
       search: No results found for "{searchText}"
       filter: No entities found for these filters
       suggestion: "You can try to:"

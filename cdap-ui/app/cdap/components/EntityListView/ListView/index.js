@@ -31,8 +31,7 @@ export default class HomeListView extends Component {
       selectedEntity: {}
     };
 
-    this.clearSearchQuery = this.clearSearchQuery.bind(this);
-    this.clearFilters = this.clearFilters.bind(this);
+    this.clearSearchAndFilters = this.clearSearchAndFilters.bind(this);
     this.openAddEntityModal = this.openAddEntityModal.bind(this);
   }
 
@@ -64,11 +63,8 @@ export default class HomeListView extends Component {
     return this.props.activeFilter.length === 0 || this.props.activeFilter.length === this.props.filterOptions.length;
   }
 
-  clearSearchQuery() {
+  clearSearchAndFilters() {
     this.props.onSearch('');
-  }
-
-  clearFilters() {
     this.props.onFiltersCleared();
   }
 
@@ -127,16 +123,13 @@ export default class HomeListView extends Component {
 
   getEmptyMessage() {
     let emptyMessage = T.translate('features.EntityListView.emptyMessage.default');
-    let clearFunc;
     let clearText;
     if (this.props.searchText) {
       emptyMessage = T.translate('features.EntityListView.emptyMessage.search', {searchText: this.props.searchText});
-      clearFunc = this.clearSearchQuery;
       clearText = T.translate('features.EntityListView.emptyMessage.clearText.search');
     }
     if (!this.noEntitiesFilteredOut()) {
       emptyMessage = T.translate('features.EntityListView.emptyMessage.filter');
-      clearFunc = this.clearFilters;
       clearText = T.translate('features.EntityListView.emptyMessage.clearText.filter');
     }
     return (
@@ -145,14 +138,14 @@ export default class HomeListView extends Component {
         <hr />
         <div className="empty-message-suggestions">
           {
-            clearFunc && clearText ?
+            clearText ?
               (
                 <span>
                   <span>{T.translate('features.EntityListView.emptyMessage.suggestion')}</span>
                   <br />
                   <span
                     className="action-item"
-                    onClick={clearFunc}
+                    onClick={this.clearSearchAndFilters}
                   >
                     {T.translate('features.EntityListView.emptyMessage.clearText.clear')}
                   </span>
