@@ -148,6 +148,13 @@ features:
       default: No entities found in the system
       search: No results found for "{searchText}"
       filter: No entities found for these filters
+      suggestion: "You can try to:"
+      clearText:
+        clear: Clear
+        search: " your search or"
+        filter: " your filters or"
+        add: Add
+        entities: " new entities"
     Cards:
       type: "Type: "
     Errors:

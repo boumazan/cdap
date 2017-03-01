@@ -126,37 +126,37 @@ export default class HomeListView extends Component {
   }
 
   getEmptyMessage() {
-    let content = T.translate('features.EntityListView.emptyMessage.default');
+    let emptyMessage = T.translate('features.EntityListView.emptyMessage.default');
     let clearFunc;
     let clearText;
     if (this.props.searchText) {
-      content = T.translate('features.EntityListView.emptyMessage.search', {searchText: this.props.searchText});
+      emptyMessage = T.translate('features.EntityListView.emptyMessage.search', {searchText: this.props.searchText});
       clearFunc = this.clearSearchQuery;
-      clearText = 'search';
+      clearText = T.translate('features.EntityListView.emptyMessage.clearText.search');
     }
     if (!this.noEntitiesFilteredOut()) {
-      content = T.translate('features.EntityListView.emptyMessage.filter');
+      emptyMessage = T.translate('features.EntityListView.emptyMessage.filter');
       clearFunc = this.clearFilters;
-      clearText = 'filters';
+      clearText = T.translate('features.EntityListView.emptyMessage.clearText.filter');
     }
     return (
       <div className="empty-message-container">
-        <strong>{content}</strong>
+        <strong>{emptyMessage}</strong>
         <hr />
         <div className="empty-message-suggestions">
           {
             clearFunc && clearText ?
               (
                 <span>
-                  <span>You can try to:</span>
+                  <span>{T.translate('features.EntityListView.emptyMessage.suggestion')}</span>
                   <br />
                   <span
                     className="action-item"
                     onClick={clearFunc}
                   >
-                    Clear
+                    {T.translate('features.EntityListView.emptyMessage.clearText.clear')}
                   </span>
-                  <span> your {clearText} or</span>
+                  <span>{clearText}</span>
                   <br />
                 </span>
               )
@@ -167,9 +167,9 @@ export default class HomeListView extends Component {
             className="action-item"
             onClick={this.openAddEntityModal}
           >
-            Add
+            {T.translate('features.EntityListView.emptyMessage.clearText.add')}
           </span>
-          <span> new entities</span>
+          <span>{T.translate('features.EntityListView.emptyMessage.clearText.entities')}</span>
         </div>
       </div>
     );
