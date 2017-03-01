@@ -20,6 +20,7 @@ import classnames from 'classnames';
 import {objectQuery} from 'services/helpers';
 import T from 'i18n-react';
 import JustAddedSection from 'components/EntityListView/JustAddedSection';
+import PlusButtonStore from 'services/PlusButtonStore';
 
 export default class HomeListView extends Component {
   constructor(props) {
@@ -29,6 +30,10 @@ export default class HomeListView extends Component {
       list: this.props.list || [],
       selectedEntity: {}
     };
+
+    this.clearSearchQuery = this.clearSearchQuery.bind(this);
+    this.clearFilters = this.clearFilters.bind(this);
+    this.openAddEntityModal = this.openAddEntityModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -57,6 +62,23 @@ export default class HomeListView extends Component {
 
   noEntitiesFilteredOut() {
     return this.props.activeFilter.length === 0 || this.props.activeFilter.length === this.props.filterOptions.length;
+  }
+
+  clearSearchQuery() {
+    this.props.onSearch('');
+  }
+
+  clearFilters() {
+    this.props.onFiltersCleared();
+  }
+
+  openAddEntityModal() {
+    PlusButtonStore.dispatch({
+      type: 'TOGGLE_PLUSBUTTON_MODAL',
+      payload: {
+        modalState: true
+      }
+    });
   }
 
   getActiveFilterStrings() {
@@ -105,17 +127,41 @@ export default class HomeListView extends Component {
 
   getEmptyMessage() {
     let content = T.translate('features.EntityListView.emptyMessage.default');
+    let clearFunc;
+    let clearText;
     if (this.props.searchText) {
       content = T.translate('features.EntityListView.emptyMessage.search', {searchText: this.props.searchText});
+      clearFunc = this.clearSearchQuery;
+      clearText = 'search';
     }
     if (!this.noEntitiesFilteredOut()) {
       content = T.translate('features.EntityListView.emptyMessage.filter');
+      clearFunc = this.clearFilters;
+      clearText = 'filters';
     }
     return (
-      <div className="entities-container">
-        <h3 className="text-xs-center empty-message">
-          {content}
-        </h3>
+      <div className="empty-message-container">
+        <strong>{content}</strong>
+        <hr />
+        <div className="empty-message-suggestions">
+          <span>You can try to:</span>
+          <br />
+          <span
+            className="action-item"
+            onClick={clearFunc}
+          >
+            Clear
+          </span>
+          <span> your {clearText} or</span>
+          <br />
+          <span
+            className="action-item"
+            onClick={this.openAddEntityModal}
+          >
+            Add
+          </span>
+          <span> new entities</span>
+        </div>
       </div>
     );
   }
@@ -189,6 +235,8 @@ HomeListView.propTypes = {
   onEntityClick: PropTypes.func,
   onUpdate: PropTypes.func,
   onFastActionSuccess: PropTypes.func,
+  onSearch: PropTypes.func,
+  onFiltersCleared: PropTypes.func,
   className: PropTypes.string,
   activeEntity: PropTypes.object,
   currentPage: PropTypes.number,

@@ -193,7 +193,7 @@
     transform: translate(-50%, -50%);
     color: gray;
   }
-  .empty-message {
+  .empty-message-container {
     position: absolute;
     top: 40%;
     left: 50%;
@@ -204,6 +204,25 @@
     &.text-danger {
       .fa-exclamation-triangle {
         margin-right: 5px;
+      }
+    }
+
+    hr {
+      $hr-color: #999999;
+      color: $hr-color;
+      background-color: $hr-color;
+    }
+
+    .empty-message-suggestions {
+      font-size: 14px;
+
+      .action-item {
+        color: $cdap-orange;
+
+        &:hover {
+          text-decoration: underline;
+          cursor: pointer;
+        }
       }
     }
   }
