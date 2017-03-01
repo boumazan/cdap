@@ -56,7 +56,7 @@ export default class AddNamespaceWizard extends Component {
     });
   }
   buildSuccessInfo(responseText) {
-    // responseText has the format "Namespace '{namespace}' created successfully.""
+    // responseText has the format "Namespace '{namespace}' created successfully."
     let newNamespaceId = responseText.split("'")[1];
     let currentNamespaceId = NamespaceStore.getState().selectedNamespace;
     let message = T.translate('features.Wizard.Add-Namespace.Status.creation-success-desc', {namespaceId: newNamespaceId});
