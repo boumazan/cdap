@@ -14,20 +14,20 @@
  * the License.
 */
 import React, {PropTypes} from 'react';
+import PlusButtonStore from 'services/PlusButtonStore';
 import classnames from 'classnames';
 
 require('./ResourceCenterEntity.scss');
 
 export default function ResourceCenterEntity({className, iconClassName, title, description, actionLabel, onClick, disabled, actionLink}) {
-  const button = (
-    <button
-      className={classnames("btn btn-primary")}
-      onClick={onClick}
-      disabled={disabled}
-    >
-      {actionLabel}
-    </button>
-  );
+  const closeResourceCenter = () => {
+    PlusButtonStore.dispatch({
+      type: 'TOGGLE_PLUSBUTTON_MODAL',
+      payload: {
+        modalState: false
+      }
+    });
+  };
   return (
     <div className={classnames('resourcecenter-entity-card', className)}>
       <div className="image-button-container">
@@ -42,6 +42,7 @@ export default function ResourceCenterEntity({className, iconClassName, title, d
               <a href={actionLink}>
                 <button
                   className={classnames("btn btn-primary")}
+                  onClick={closeResourceCenter}
                   disabled={disabled}
                 >
                   {actionLabel}
