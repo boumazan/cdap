@@ -59,8 +59,8 @@ export default class HomeListView extends Component {
     }
   }
 
-  noEntitiesFilteredOut() {
-    return this.props.activeFilter.length === 0 || this.props.activeFilter.length === this.props.filterOptions.length;
+  filtersApplied() {
+    return this.props.activeFilter.length > 0 && this.props.activeFilter.length < this.props.filterOptions.length;
   }
 
   clearSearchAndFilters() {
@@ -95,7 +95,7 @@ export default class HomeListView extends Component {
       displaySome: T.translate('features.EntityListView.Info.subtitle.displaySome'),
     };
 
-    let noEntitiesFilteredOut = this.noEntitiesFilteredOut();
+    let filtersApplied = this.filtersApplied();
     let activeFilters = this.getActiveFilterStrings();
     let activeFilterString = activeFilters.join(', ');
     let activeSort = this.props.activeSort;
@@ -104,11 +104,11 @@ export default class HomeListView extends Component {
 
     if (searchText) {
       subtitle = `${text.search} "${searchText}"`;
-      if (!noEntitiesFilteredOut) {
+      if (filtersApplied) {
         subtitle += `, ${text.filteredBy} ${activeFilterString}`;
       }
     } else {
-      if (noEntitiesFilteredOut) {
+      if (!filtersApplied) {
         subtitle = `${text.displayAll}`;
       } else {
         subtitle = `${text.displaySome} ${activeFilterString}`;
@@ -128,7 +128,7 @@ export default class HomeListView extends Component {
       emptyMessage = T.translate('features.EntityListView.emptyMessage.search', {searchText: this.props.searchText});
       clearText = T.translate('features.EntityListView.emptyMessage.clearText.search');
     }
-    if (!this.noEntitiesFilteredOut()) {
+    if (this.filtersApplied()) {
       emptyMessage = T.translate('features.EntityListView.emptyMessage.filter');
       clearText = T.translate('features.EntityListView.emptyMessage.clearText.filter');
     }
