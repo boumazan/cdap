@@ -20,7 +20,7 @@ import classnames from 'classnames';
 import {objectQuery} from 'services/helpers';
 import T from 'i18n-react';
 import JustAddedSection from 'components/EntityListView/JustAddedSection';
-import PlusButtonStore from 'services/PlusButtonStore';
+import NoEntitiesMessage from 'components/EntityListView/NoEntitiesMessage';
 
 export default class HomeListView extends Component {
   constructor(props) {
@@ -30,9 +30,6 @@ export default class HomeListView extends Component {
       list: this.props.list || [],
       selectedEntity: {}
     };
-
-    this.clearSearchAndFilters = this.clearSearchAndFilters.bind(this);
-    this.openAddEntityModal = this.openAddEntityModal.bind(this);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -59,22 +56,8 @@ export default class HomeListView extends Component {
     }
   }
 
-  filtersApplied() {
+  filtersAreApplied() {
     return this.props.activeFilter.length > 0 && this.props.activeFilter.length < this.props.filterOptions.length;
-  }
-
-  clearSearchAndFilters() {
-    this.props.onSearch('');
-    this.props.onFiltersCleared();
-  }
-
-  openAddEntityModal() {
-    PlusButtonStore.dispatch({
-      type: 'TOGGLE_PLUSBUTTON_MODAL',
-      payload: {
-        modalState: true
-      }
-    });
   }
 
   getActiveFilterStrings() {
@@ -95,7 +78,7 @@ export default class HomeListView extends Component {
       displaySome: T.translate('features.EntityListView.Info.subtitle.displaySome'),
     };
 
-    let filtersApplied = this.filtersApplied();
+    let filtersAreApplied = this.filtersAreApplied();
     let activeFilters = this.getActiveFilterStrings();
     let activeFilterString = activeFilters.join(', ');
     let activeSort = this.props.activeSort;
@@ -104,11 +87,11 @@ export default class HomeListView extends Component {
 
     if (searchText) {
       subtitle = `${text.search} "${searchText}"`;
-      if (filtersApplied) {
+      if (filtersAreApplied) {
         subtitle += `, ${text.filteredBy} ${activeFilterString}`;
       }
     } else {
-      if (!filtersApplied) {
+      if (!filtersAreApplied) {
         subtitle = `${text.displayAll}`;
       } else {
         subtitle = `${text.displaySome} ${activeFilterString}`;
@@ -119,53 +102,6 @@ export default class HomeListView extends Component {
     }
 
     return subtitle;
-  }
-
-  getEmptyMessage() {
-    let emptyMessage = T.translate('features.EntityListView.emptyMessage.default');
-    let clearText;
-    if (this.props.searchText) {
-      emptyMessage = T.translate('features.EntityListView.emptyMessage.search', {searchText: this.props.searchText});
-      clearText = T.translate('features.EntityListView.emptyMessage.clearText.search');
-    }
-    if (this.filtersApplied()) {
-      emptyMessage = T.translate('features.EntityListView.emptyMessage.filter');
-      clearText = T.translate('features.EntityListView.emptyMessage.clearText.filter');
-    }
-    return (
-      <div className="empty-message-container">
-        <strong>{emptyMessage}</strong>
-        <hr />
-        <div className="empty-message-suggestions">
-          {
-            clearText ?
-              (
-                <span>
-                  <span>{T.translate('features.EntityListView.emptyMessage.suggestion')}</span>
-                  <br />
-                  <span
-                    className="action-item"
-                    onClick={this.clearSearchAndFilters}
-                  >
-                    {T.translate('features.EntityListView.emptyMessage.clearText.clear')}
-                  </span>
-                  <span>{clearText}</span>
-                  <br />
-                </span>
-              )
-            :
-              null
-          }
-          <span
-            className="action-item"
-            onClick={this.openAddEntityModal}
-          >
-            {T.translate('features.EntityListView.emptyMessage.clearText.add')}
-          </span>
-          <span>{T.translate('features.EntityListView.emptyMessage.clearText.entities')}</span>
-        </div>
-      </div>
-    );
   }
 
   render() {
@@ -179,7 +115,13 @@ export default class HomeListView extends Component {
     }
 
     if (!this.state.loading && !this.state.list.length) {
-      content = this.getEmptyMessage();
+      content = <NoEntitiesMessage
+                  onSearch={this.props.onSearch.bind(this)}
+                  onFiltersCleared={this.props.onFiltersCleared.bind(this)}
+                  searchText={this.props.searchText}
+                  filtersAreApplied={this.filtersAreApplied.bind(this)}
+                />;
+
     }
     if (!this.state.loading && this.state.list.length) {
       content = this.state.list.map(entity => {
