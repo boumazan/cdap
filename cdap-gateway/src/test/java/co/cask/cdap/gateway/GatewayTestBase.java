@@ -45,7 +45,7 @@ import co.cask.cdap.notifications.guice.NotificationServiceRuntimeModule;
 import co.cask.cdap.notifications.service.NotificationService;
 import co.cask.cdap.proto.NamespaceMeta;
 import co.cask.cdap.proto.id.NamespaceId;
-import co.cask.cdap.security.guice.InMemorySecurityModule;
+import co.cask.cdap.security.guice.SecurityModules;
 import co.cask.cdap.security.spi.authorization.NoOpAuthorizer;
 import co.cask.cdap.security.spi.authorization.PrivilegesManager;
 import com.google.common.collect.Maps;
@@ -160,7 +160,7 @@ public abstract class GatewayTestBase {
                                       ("localhost", 0).getAddress());
           }
         },
-        new InMemorySecurityModule(),
+        new SecurityModules().getInMemoryModules(),
         new NotificationServiceRuntimeModule().getInMemoryModules(),
         new AppFabricTestModule(conf)
       ).with(new AbstractModule() {
