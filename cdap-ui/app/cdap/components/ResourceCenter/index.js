@@ -61,7 +61,6 @@ export default class ResourceCenter extends Component {
         description: T.translate('features.Resource-Center.HydratorPipeline.description'),
         actionLabel: T.translate('features.Resource-Center.HydratorPipeline.actionbtn0'),
         iconClassName: 'fa icon-hydrator',
-        wizardId: 'hydratorPipeline',
         disabled: false,
         actionLink: window.getHydratorUrl({
           stateName: 'hydrator.create',
@@ -80,7 +79,6 @@ export default class ResourceCenter extends Component {
     };
   }
   toggleWizard(wizardName) {
-    if (wizardName === 'hydratorPipeline') { return; }
     this.setState({
       [wizardName]: !this.state[wizardName]
     });

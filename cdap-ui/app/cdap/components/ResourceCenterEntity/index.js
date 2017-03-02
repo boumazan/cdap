@@ -39,12 +39,25 @@ export default function ResourceCenterEntity({className, iconClassName, title, d
         {
           actionLink ?
             (
-              <a href = {actionLink}>
-                {button}
+              <a href={actionLink}>
+                <button
+                  className={classnames("btn btn-primary")}
+                  disabled={disabled}
+                >
+                  {actionLabel}
+                </button>
               </a>
             )
           :
-            button
+            (
+              <button
+                className={classnames("btn btn-primary")}
+                onClick={onClick}
+                disabled={disabled}
+              >
+                {actionLabel}
+              </button>
+            )
         }
       </div>
       <div className="content-container">
