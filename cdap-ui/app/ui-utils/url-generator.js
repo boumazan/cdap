@@ -158,7 +158,7 @@ window.getHydratorUrl = function(navigationObj = {}) {
     'hydrator': '',
     'hydrator.create': '/studio',
     'hydrator.detail': '/view/:pipelineId',
-    'hydrator.list': '?page'
+    'hydrator.list': ''
   };
   let url = baseUrl + stateToUrlMap[stateName || 'pipelines'];
   url = buildCustomUrl(url, stateParams);
