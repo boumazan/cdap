@@ -17,6 +17,7 @@
 import React, {PropTypes} from 'react';
 import T from 'i18n-react';
 import PlusButtonStore from 'services/PlusButtonStore';
+require('./NoEntitiesMessage.scss');
 
 export default function NoEntitiesMessage({onSearch, onFiltersCleared, searchText, filtersAreApplied}) {
   const openAddEntityModal = () => {
