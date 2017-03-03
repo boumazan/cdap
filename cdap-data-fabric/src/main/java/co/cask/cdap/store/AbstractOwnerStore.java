@@ -16,11 +16,11 @@
 
 package co.cask.cdap.store;
 
-import co.cask.cdap.common.kerberos.OwnerStore;
-import co.cask.cdap.common.kerberos.SecurityUtil;
 import co.cask.cdap.proto.element.EntityType;
 import co.cask.cdap.proto.id.KerberosPrincipalId;
 import co.cask.cdap.proto.id.NamespacedEntityId;
+import co.cask.cdap.security.impersonation.OwnerStore;
+import co.cask.cdap.security.impersonation.SecurityUtil;
 import com.google.common.collect.Sets;
 
 import java.util.Set;

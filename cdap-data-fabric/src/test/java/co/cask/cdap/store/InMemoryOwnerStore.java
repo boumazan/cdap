@@ -17,9 +17,9 @@
 package co.cask.cdap.store;
 
 import co.cask.cdap.common.AlreadyExistsException;
-import co.cask.cdap.common.kerberos.OwnerStore;
 import co.cask.cdap.proto.id.KerberosPrincipalId;
 import co.cask.cdap.proto.id.NamespacedEntityId;
+import co.cask.cdap.security.impersonation.OwnerStore;
 
 import java.io.IOException;
 import java.util.HashMap;

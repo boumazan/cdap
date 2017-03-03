@@ -16,7 +16,7 @@
 
 package co.cask.cdap.store;
 
-import co.cask.cdap.common.kerberos.OwnerStore;
+import co.cask.cdap.security.impersonation.OwnerStore;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
