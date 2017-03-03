@@ -17,7 +17,6 @@
 package co.cask.cdap.security.impersonation;
 
 
-import co.cask.cdap.common.AlreadyExistsException;
 import co.cask.cdap.common.conf.CConfiguration;
 import co.cask.cdap.common.conf.Constants;
 import co.cask.cdap.common.io.Locations;
@@ -64,9 +63,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import javax.annotation.Nullable;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 
@@ -330,7 +326,7 @@ public class UGIProviderTest {
   }
 
   private OwnerAdmin getOwnerAdmin() {
-    return new DefaultOwnerAdmin(cConf, new MockOwnerStore(), namespaceClient);
+    return new DefaultOwnerAdmin(cConf, new InMemoryOwnerStore(), namespaceClient);
   }
 
   private void setKeytabDir(String keytabDirPath) {
@@ -385,33 +381,6 @@ public class UGIProviderTest {
       PrincipalCredentials principalCredentials = new PrincipalCredentials(aliceKerberosPrincipalId.getPrincipal(),
                                                                            credentialsFile.toURI().toString());
       responder.sendJson(HttpResponseStatus.OK, principalCredentials);
-    }
-  }
-
-  private static class MockOwnerStore implements OwnerStore {
-
-    final Map<NamespacedEntityId, KerberosPrincipalId> ownerInfo = new HashMap<>();
-
-    @Override
-    public void add(NamespacedEntityId entityId,
-                    KerberosPrincipalId kerberosPrincipalId) throws IOException, AlreadyExistsException {
-      ownerInfo.put(entityId, kerberosPrincipalId);
-    }
-
-    @Nullable
-    @Override
-    public KerberosPrincipalId getOwner(NamespacedEntityId entityId) throws IOException {
-      return ownerInfo.get(entityId);
-    }
-
-    @Override
-    public boolean exists(NamespacedEntityId entityId) throws IOException {
-      return ownerInfo.containsKey(entityId);
-    }
-
-    @Override
-    public void delete(NamespacedEntityId entityId) throws IOException {
-      ownerInfo.remove(entityId);
     }
   }
 }
