@@ -29,8 +29,10 @@ export default function NoEntitiesMessage({onSearch, onFiltersCleared, searchTex
   };
 
   const clearSearchAndFilters = () => {
-    onSearch('');
-    onFiltersCleared();
+    if (onSearch && onFiltersCleared) {
+      onSearch('');
+      onFiltersCleared();
+    }
   };
 
   let emptyMessage = T.translate('features.EntityListView.emptyMessage.default');
@@ -39,7 +41,7 @@ export default function NoEntitiesMessage({onSearch, onFiltersCleared, searchTex
   if (searchText) {
     emptyMessage = T.translate('features.EntityListView.emptyMessage.search', {searchText});
     clearText = T.translate('features.EntityListView.emptyMessage.clearText.search');
-  } else if (filtersAreApplied()) {
+  } else if (filtersAreApplied && filtersAreApplied()) {
     emptyMessage = T.translate('features.EntityListView.emptyMessage.filter');
     clearText = T.translate('features.EntityListView.emptyMessage.clearText.filter');
   }
@@ -56,7 +58,7 @@ export default function NoEntitiesMessage({onSearch, onFiltersCleared, searchTex
                 <span>{T.translate('features.EntityListView.emptyMessage.suggestion')}</span>
                 <br />
                 <span
-                  className="action-item"
+                  className="action-item clear"
                   onClick={clearSearchAndFilters}
                 >
                   {T.translate('features.EntityListView.emptyMessage.clearText.clear')}
@@ -69,7 +71,7 @@ export default function NoEntitiesMessage({onSearch, onFiltersCleared, searchTex
             null
         }
         <span
-          className="action-item"
+          className="action-item add-entity"
           onClick={openAddEntityModal}
         >
           {T.translate('features.EntityListView.emptyMessage.clearText.add')}
